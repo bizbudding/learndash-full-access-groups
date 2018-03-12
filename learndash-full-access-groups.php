@@ -129,7 +129,7 @@ final class LD_Full_Access_Groups {
 		add_action( 'admin_enqueue_scripts',  array( $this, 'register_scripts' ) );
 		add_action( 'add_meta_boxes',         array( $this, 'register_metabox' ) );
 		add_action( 'save_post_sfwd-courses', array( $this, 'save_values' ) );
-		add_action( 'genesis_before',         array( $this, 'course_bypass' ) );
+		add_action( 'get_header',             array( $this, 'course_bypass' ) );
 	}
 
 	/**
@@ -288,7 +288,6 @@ final class LD_Full_Access_Groups {
 		if ( ! $course_id ) {
 			return;
 		}
-
 		// Saved groups.
 		$groups = get_post_meta( $course_id, 'ld_full_access_groups', true );
 
