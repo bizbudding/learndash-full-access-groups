@@ -135,20 +135,16 @@ final class LD_Full_Access_Groups {
 	/**
 	 * Setup the plugin updater.
 	 *
+	 * @uses    https://github.com/YahnisElsts/plugin-update-checker/
+	 *
 	 * @return  void
 	 */
 	public function updater() {
-		/**
-		 * Setup the updater.
-		 *
-		 * @uses    https://github.com/YahnisElsts/plugin-update-checker/
-		 *
-		 * @return  void
-		 */
 		if ( ! class_exists( 'Puc_v4_Factory' ) ) {
 			require_once WEBSITE_PLUGIN_INCLUDES_DIR . 'vendor/plugin-update-checker/plugin-update-checker.php'; // 4.4
 		} else {
-			$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/maiprowp/mai-favorites/', __FILE__, 'textdomain' );
+			$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/bizbudding/learndash-full-access-groups/', __FILE__, 'learndash-full-access-groups' );
+			$updater->setAuthentication( '3221386f577b42d7089c35e0b4efffcaf3570ffd' );
 		}
 	}
 
