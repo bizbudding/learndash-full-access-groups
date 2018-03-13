@@ -141,7 +141,7 @@ final class LD_Full_Access_Groups {
 	 */
 	public function updater() {
 		if ( ! class_exists( 'Puc_v4_Factory' ) ) {
-			require_once WEBSITE_PLUGIN_INCLUDES_DIR . 'vendor/plugin-update-checker/plugin-update-checker.php'; // 4.4
+			require_once LD_FULL_ACCESS_GROUPS_INCLUDES_DIR . 'vendor/plugin-update-checker/plugin-update-checker.php'; // 4.4
 		} else {
 			$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/bizbudding/learndash-full-access-groups/', __FILE__, 'learndash-full-access-groups' );
 			$updater->setAuthentication( '3221386f577b42d7089c35e0b4efffcaf3570ffd' );
