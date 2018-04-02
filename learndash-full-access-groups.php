@@ -4,7 +4,7 @@
  * Plugin Name:     LearnDash Full Access Groups
  * Plugin URI:      https://bizbudding.com
  * Description:     Allow specific Groups to access a course without start date restrictions.
- * Version:         1.0.1
+ * Version:         1.1.0
  *
  * Author:          BizBudding, Mike Hemberger
  * Author URI:      https://bizbudding.com
@@ -89,7 +89,7 @@ final class LD_Full_Access_Groups {
 
 		// Plugin version.
 		if ( ! defined( 'LD_FULL_ACCESS_GROUPS_VERSION' ) ) {
-			define( 'LD_FULL_ACCESS_GROUPS_VERSION', '1.0.1' );
+			define( 'LD_FULL_ACCESS_GROUPS_VERSION', '1.1.0' );
 		}
 
 		// Plugin Folder Path.
@@ -142,10 +142,9 @@ final class LD_Full_Access_Groups {
 	public function updater() {
 		if ( ! class_exists( 'Puc_v4_Factory' ) ) {
 			require_once LD_FULL_ACCESS_GROUPS_INCLUDES_DIR . 'vendor/plugin-update-checker/plugin-update-checker.php'; // 4.4
-		} else {
-			$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/bizbudding/learndash-full-access-groups/', __FILE__, 'learndash-full-access-groups' );
-			$updater->setAuthentication( '3221386f577b42d7089c35e0b4efffcaf3570ffd' );
 		}
+		$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/bizbudding/learndash-full-access-groups/', __FILE__, 'learndash-full-access-groups' );
+		$updater->setAuthentication( '3221386f577b42d7089c35e0b4efffcaf3570ffd' );
 	}
 
 	/**
@@ -168,11 +167,11 @@ final class LD_Full_Access_Groups {
 
 		add_meta_box(
 			'ld_full_access_groups_edit',
-			esc_html__( 'LearnDash Full Access Groups', 'text-domain' ),
+			esc_html__( 'LearnDash Full Access Groups', 'learndash-full-access-groups' ),
 			array( $this, 'render_metabox' ),
 			'sfwd-courses',
 			'side',
-			'core'
+			'default'
 		);
 
 	}
@@ -190,32 +189,34 @@ final class LD_Full_Access_Groups {
 		wp_enqueue_script( 'select2' );
 		wp_enqueue_script( 'ld_full_access_groups' );
 
-		$args = array(
-			'post_type'              => 'groups',
-			'posts_per_page'         => 500,
-			'post_status'            => 'publish',
-			'no_found_rows'          => true,
-			'update_post_meta_cache' => false,
-			'update_post_term_cache' => false,
-		);
+		// return;
 
-		$groups = new WP_Query( $args );
+		$groups = get_posts( array(
+			'post_type'        => 'groups',
+			'posts_per_page'   => 500,
+			'post_status'      => 'publish',
+			'orderby'          => 'title',
+			'order'            => 'ASC',
+			'suppress_filters' => true
+		) );
 
-		if ( $groups->have_posts() ) {
+		if ( $groups ) {
+
 			// Set nonce.
 			wp_nonce_field( 'nonce_ld_full_access_groups_action', 'nonce_ld_full_access_groups_field' );
+
 			// Existing values.
 			$selected = (array) get_post_meta( $post->ID, 'ld_full_access_groups', true );
+
 			// Select field.
 			echo '<p><select id="ld_full_access_groups" class="ld-full-access-groups widefat" name="ld_full_access_groups[]" multiple="multiple">';
-				while ( $groups->have_posts() ) : $groups->the_post();
-					printf( '<option value="%s" %s>%s</option>', get_the_ID(), selected( in_array( get_the_ID(), $selected ) ), get_the_title() );
-				endwhile;
+				foreach ( $groups as $group ) {
+					printf( '<option value="%s" %s>%s</option>', $group->ID, selected( in_array( $group->ID, $selected ) ), get_the_title( $group->ID ) );
+				}
 			echo '</select></p>';
 			printf( '<em>%s</em>', esc_html__( 'Selected groups will have access to this course without start date restrictions. Course access/enrollment is managed by the group itself. Course prerequisites will not be affected.', 'learndash-full-access-groups' ) );
-		}
 
-		wp_reset_postdata();
+		}
 
 	}
 
