@@ -4,7 +4,7 @@
  * Plugin Name:     LearnDash Full Access Groups
  * Plugin URI:      https://bizbudding.com
  * Description:     Allow specific Groups to access a course without start date restrictions.
- * Version:         1.1.0
+ * Version:         1.2.0
  *
  * Author:          BizBudding, Mike Hemberger
  * Author URI:      https://bizbudding.com
@@ -35,8 +35,7 @@ final class LD_Full_Access_Groups {
 	 * @since   1.0.0
 	 * @static  var array $instance
 	 * @uses    LD_Full_Access_Groups::setup_constants() Setup the constants needed.
-	 * @uses    LD_Full_Access_Groups::includes() Include the required files.
-	 * @uses    LD_Full_Access_Groups::setup() Activate, deactivate, etc.
+	 * @uses    LD_Full_Access_Groups::run() Activate, deactivate, etc.
 	 * @see     LD_FULL_ACCESS_GROUPS()
 	 * @return  object | LD_Full_Access_Groups The one true LD_Full_Access_Groups
 	 */
@@ -46,7 +45,7 @@ final class LD_Full_Access_Groups {
 			self::$instance = new LD_Full_Access_Groups;
 			// Methods
 			self::$instance->setup_constants();
-			self::$instance->setup();
+			self::$instance->run();
 		}
 		return self::$instance;
 	}
@@ -124,7 +123,7 @@ final class LD_Full_Access_Groups {
 	 *
 	 * @return  void
 	 */
-	public function setup() {
+	public function run() {
 		add_action( 'admin_init',             array( $this, 'updater' ) );
 		add_action( 'admin_enqueue_scripts',  array( $this, 'register_scripts' ) );
 		add_action( 'add_meta_boxes',         array( $this, 'register_metabox' ) );
@@ -144,7 +143,6 @@ final class LD_Full_Access_Groups {
 			require_once LD_FULL_ACCESS_GROUPS_INCLUDES_DIR . 'vendor/plugin-update-checker/plugin-update-checker.php'; // 4.4
 		}
 		$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/bizbudding/learndash-full-access-groups/', __FILE__, 'learndash-full-access-groups' );
-		$updater->setAuthentication( '3221386f577b42d7089c35e0b4efffcaf3570ffd' );
 	}
 
 	/**
@@ -328,9 +326,9 @@ final class LD_Full_Access_Groups {
  *
  * @return object|LD_Full_Access_Groups The one true LD_Full_Access_Groups Instance.
  */
-function LD_Full_Access_Groups() {
+function ld_full_access_groups() {
 	return LD_Full_Access_Groups::instance();
 }
 
 // Get LD_Full_Access_Groups Running.
-LD_Full_Access_Groups();
+ld_full_access_groups();
