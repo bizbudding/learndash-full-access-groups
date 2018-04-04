@@ -88,7 +88,7 @@ final class LD_Full_Access_Groups {
 
 		// Plugin version.
 		if ( ! defined( 'LD_FULL_ACCESS_GROUPS_VERSION' ) ) {
-			define( 'LD_FULL_ACCESS_GROUPS_VERSION', '1.1.0' );
+			define( 'LD_FULL_ACCESS_GROUPS_VERSION', '1.2.0' );
 		}
 
 		// Plugin Folder Path.
