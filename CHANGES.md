@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 1.2.1 (10/5/20)
+* Fixed: is_singular() check for LD post types not working.
+
 #### 1.2.0 (4/4/18)
 * Changed: Make public.
 
