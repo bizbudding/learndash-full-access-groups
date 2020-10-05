@@ -98,9 +98,9 @@ final class LD_Full_Access_Groups {
 		}
 
 		// Plugin Includes Path
-		if ( ! defined( 'LD_FULL_ACCESS_GROUPS_INCLUDES_DIR' ) ) {
-			define( 'LD_FULL_ACCESS_GROUPS_INCLUDES_DIR', LD_FULL_ACCESS_GROUPS_PLUGIN_DIR . 'includes/' );
-		}
+		// if ( ! defined( 'LD_FULL_ACCESS_GROUPS_INCLUDES_DIR' ) ) {
+		// 	define( 'LD_FULL_ACCESS_GROUPS_INCLUDES_DIR', LD_FULL_ACCESS_GROUPS_PLUGIN_DIR . 'includes/' );
+		// }
 
 		// Plugin Folder URL.
 		if ( ! defined( 'LD_FULL_ACCESS_GROUPS_PLUGIN_URL' ) ) {
