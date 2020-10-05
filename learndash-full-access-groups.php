@@ -45,6 +45,7 @@ final class LD_Full_Access_Groups {
 			self::$instance = new LD_Full_Access_Groups;
 			// Methods
 			self::$instance->setup_constants();
+			self::$instance->includes();
 			self::$instance->run();
 		}
 		return self::$instance;
@@ -119,6 +120,18 @@ final class LD_Full_Access_Groups {
 	}
 
 	/**
+	 * Include required files.
+	 *
+	 * @access  private
+	 * @since   0.1.0
+	 * @return  void
+	 */
+	private function includes() {
+		// Include vendor libraries.
+		require_once __DIR__ . '/vendor/autoload.php';
+	}
+
+	/**
 	 * Hook all the things.
 	 *
 	 * @return  void
@@ -132,16 +145,27 @@ final class LD_Full_Access_Groups {
 	}
 
 	/**
-	 * Setup the plugin updater.
+	 * Setup the updater.
 	 *
-	 * @uses    https://github.com/YahnisElsts/plugin-update-checker/
+	 * composer require yahnis-elsts/plugin-update-checker
 	 *
-	 * @return  void
+	 * @uses https://github.com/YahnisElsts/plugin-update-checker/
+	 *
+	 * @return void
 	 */
 	public function updater() {
-		if ( ! class_exists( 'Puc_v4_Factory' ) ) {
-			require_once LD_FULL_ACCESS_GROUPS_INCLUDES_DIR . 'vendor/plugin-update-checker/plugin-update-checker.php'; // 4.4
+
+		// Bail if current user cannot manage plugins.
+		if ( ! current_user_can( 'install_plugins' ) ) {
+			return;
 		}
+
+		// Bail if plugin updater is not loaded.
+		if ( ! class_exists( 'Puc_v4_Factory' ) ) {
+			return;
+		}
+
+		// Setup the updater.
 		$updater = Puc_v4_Factory::buildUpdateChecker( 'https://github.com/bizbudding/learndash-full-access-groups/', __FILE__, 'learndash-full-access-groups' );
 	}
 
