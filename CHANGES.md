@@ -1,5 +1,8 @@
 ### Changelog
 
+#### 1.2.2 (3/16/21)
+* Changed: Update updater.
+
 #### 1.2.1 (10/5/20)
 * Fixed: is_singular() check for LD post types not working.
 

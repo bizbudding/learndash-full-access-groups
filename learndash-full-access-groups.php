@@ -4,7 +4,7 @@
  * Plugin Name:     LearnDash Full Access Groups
  * Plugin URI:      https://bizbudding.com
  * Description:     Allow specific Groups to access a course without start date restrictions.
- * Version:         1.2.1
+ * Version:         1.2.2
  *
  * Author:          BizBudding, Mike Hemberger
  * Author URI:      https://bizbudding.com
@@ -89,7 +89,7 @@ final class LD_Full_Access_Groups {
 
 		// Plugin version.
 		if ( ! defined( 'LD_FULL_ACCESS_GROUPS_VERSION' ) ) {
-			define( 'LD_FULL_ACCESS_GROUPS_VERSION', '1.2.1' );
+			define( 'LD_FULL_ACCESS_GROUPS_VERSION', '1.2.2' );
 		}
 
 		// Plugin Folder Path.
