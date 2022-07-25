@@ -202,8 +202,8 @@ final class LD_Full_Access_Groups {
 	 * @return  void
 	 */
 	function render_metabox( $post ) {
-		wp_enqueue_style( 'select2' );
-		wp_enqueue_script( 'select2' );
+		wp_enqueue_style( 'ldfag-select2' );
+		wp_enqueue_script( 'ldfag-select2' );
 		wp_enqueue_script( 'ld_full_access_groups' );
 
 		$groups = get_posts( array(
