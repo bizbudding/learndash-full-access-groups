@@ -4,7 +4,7 @@
  * Plugin Name:     LearnDash Full Access Groups
  * Plugin URI:      https://bizbudding.com
  * Description:     Allow specific Groups to access a course without start date restrictions.
- * Version:         1.2.2
+ * Version:         1.3.0
  *
  * Author:          BizBudding, Mike Hemberger
  * Author URI:      https://bizbudding.com
@@ -86,10 +86,9 @@ final class LD_Full_Access_Groups {
 	 * @return  void
 	 */
 	private function setup_constants() {
-
 		// Plugin version.
 		if ( ! defined( 'LD_FULL_ACCESS_GROUPS_VERSION' ) ) {
-			define( 'LD_FULL_ACCESS_GROUPS_VERSION', '1.2.2' );
+			define( 'LD_FULL_ACCESS_GROUPS_VERSION', '1.3.0' );
 		}
 
 		// Plugin Folder Path.
@@ -116,7 +115,6 @@ final class LD_Full_Access_Groups {
 		if ( ! defined( 'LD_FULL_ACCESS_GROUPS_BASENAME' ) ) {
 			define( 'LD_FULL_ACCESS_GROUPS_BASENAME', dirname( plugin_basename( __FILE__ ) ) );
 		}
-
 	}
 
 	/**
@@ -154,7 +152,6 @@ final class LD_Full_Access_Groups {
 	 * @return void
 	 */
 	public function updater() {
-
 		// Bail if current user cannot manage plugins.
 		if ( ! current_user_can( 'install_plugins' ) ) {
 			return;
@@ -175,8 +172,8 @@ final class LD_Full_Access_Groups {
 	 * @return  void
 	 */
 	public function register_scripts() {
-		wp_register_style( 'select2',                LD_FULL_ACCESS_GROUPS_PLUGIN_URL . 'assets/css/select2.min.css', array(), '4.0.5' );
-		wp_register_script( 'select2',               LD_FULL_ACCESS_GROUPS_PLUGIN_URL . 'assets/js/select2.min.js', array( 'jquery' ), '4.0.5', true );
+		wp_register_style( 'select2',                LD_FULL_ACCESS_GROUPS_PLUGIN_URL . 'assets/css/select2.min.css', array(), '4.0.13' );
+		wp_register_script( 'select2',               LD_FULL_ACCESS_GROUPS_PLUGIN_URL . 'assets/js/select2.min.js', array( 'jquery' ), '4.0.13', true );
 		wp_register_script( 'ld_full_access_groups', LD_FULL_ACCESS_GROUPS_PLUGIN_URL . 'assets/js/ld-full-access-groups.js', array( 'select2' ), LD_FULL_ACCESS_GROUPS_VERSION, true );
 	}
 
@@ -195,7 +192,6 @@ final class LD_Full_Access_Groups {
 			'side',
 			'default'
 		);
-
 	}
 
 	/**
@@ -206,12 +202,9 @@ final class LD_Full_Access_Groups {
 	 * @return  void
 	 */
 	function render_metabox( $post ) {
-
 		wp_enqueue_style( 'select2' );
 		wp_enqueue_script( 'select2' );
 		wp_enqueue_script( 'ld_full_access_groups' );
-
-		// return;
 
 		$groups = get_posts( array(
 			'post_type'        => 'groups',
@@ -237,9 +230,7 @@ final class LD_Full_Access_Groups {
 				}
 			echo '</select></p>';
 			printf( '<em>%s</em>', esc_html__( 'Selected groups will have access to this course without start date restrictions. Course access/enrollment is managed by the group itself. Course prerequisites will not be affected.', 'learndash-full-access-groups' ) );
-
 		}
-
 	}
 
 	/**
@@ -250,7 +241,6 @@ final class LD_Full_Access_Groups {
 	 * @return  void
 	 */
 	function save_values( $post_id ) {
-
 		if ( ! isset( $_POST[ 'nonce_ld_full_access_groups_field' ] ) || ! wp_verify_nonce( $_POST[ 'nonce_ld_full_access_groups_field' ], 'nonce_ld_full_access_groups_action' ) ) {
 			return;
 		}
@@ -275,7 +265,6 @@ final class LD_Full_Access_Groups {
 
 		// Update the post meta.
 		update_post_meta( $post_id, 'ld_full_access_groups', $groups );
-
 	}
 
 	/**
@@ -285,7 +274,6 @@ final class LD_Full_Access_Groups {
 	 * @return  void
 	 */
 	function course_bypass() {
-
 		// Bail if not a single learndash post.
 		if ( ! is_singular( array( 'sfwd-courses', 'sfwd-lessons', 'sfwd-quiz', 'sfwd-topic', 'sfwd-certificates' ) ) ) {
 			return;
@@ -303,6 +291,7 @@ final class LD_Full_Access_Groups {
 		if ( ! $course_id ) {
 			return;
 		}
+
 		// Saved groups.
 		$groups = get_post_meta( $course_id, 'ld_full_access_groups', true );
 
@@ -327,19 +316,20 @@ final class LD_Full_Access_Groups {
 			return;
 		}
 
-		// Remove the LD content filter that hides content and shows start date message.
-		remove_filter( 'learndash_content', 'lesson_visible_after', 1, 2 );
-
-		// Remove the lesson not available template, mostly for the course list.
-		add_filter( 'learndash_template', function( $filepath, $name, $args, $echo, $return_file_path ) {
-			if ( 'learndash_course_lesson_not_available' === $name ) {
-				return false;
-			}
-			return $filepath;
-		}, 10, 5 );
-
+		/**
+		 * Allows user to bypass the page.
+		 *
+		 * @param boolean $can_bypass Whether the user can bypass $context.
+		 * @param int     $user_id    User ID.
+		 * @param string  $context The specific action to check for.
+		 * @param array   $args Optional array of args related to the context. Typically starting with an step ID, Course ID, etc.
+		 *
+		 * @return bool
+		 */
+		add_filter( 'learndash_user_can_bypass', function( $can_bypass, $user_id, $context, $args ) {
+			return true;
+		}, 10, 4 );
 	}
-
 }
 
 /**
