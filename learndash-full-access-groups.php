@@ -172,8 +172,8 @@ final class LD_Full_Access_Groups {
 	 * @return  void
 	 */
 	public function register_scripts() {
-		wp_register_style( 'select2',                LD_FULL_ACCESS_GROUPS_PLUGIN_URL . 'assets/css/select2.min.css', array(), '4.0.13' );
-		wp_register_script( 'select2',               LD_FULL_ACCESS_GROUPS_PLUGIN_URL . 'assets/js/select2.min.js', array( 'jquery' ), '4.0.13', true );
+		wp_register_style( 'ldfag-select2',          LD_FULL_ACCESS_GROUPS_PLUGIN_URL . 'assets/css/select2.min.css', array(), '4.0.13' );
+		wp_register_script( 'ldfag-select2',         LD_FULL_ACCESS_GROUPS_PLUGIN_URL . 'assets/js/select2.min.js', array( 'jquery' ), '4.0.13', true );
 		wp_register_script( 'ld_full_access_groups', LD_FULL_ACCESS_GROUPS_PLUGIN_URL . 'assets/js/ld-full-access-groups.js', array( 'select2' ), LD_FULL_ACCESS_GROUPS_VERSION, true );
 	}
 
@@ -202,8 +202,8 @@ final class LD_Full_Access_Groups {
 	 * @return  void
 	 */
 	function render_metabox( $post ) {
-		wp_enqueue_style( 'select2' );
-		wp_enqueue_script( 'select2' );
+		wp_enqueue_style( 'ldfag-select2' );
+		wp_enqueue_script( 'ldfag-select2' );
 		wp_enqueue_script( 'ld_full_access_groups' );
 
 		$groups = get_posts( array(
